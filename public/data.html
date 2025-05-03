@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link rel="stylesheet" href="style.css" >
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="logo">
+            <h2 style="color: #ffffff;">TRAINING FROM DATA LIST</h2>
+        </div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="data.html">View Data</a></li>
+            <li><a href="admin.html">Dashboard</a></li>
+        </ul>
+    </nav>
+    <!-- <h3>Training Form Data</h3> -->
+
+    <label for="calendar">Calendar:</label>
+    <input type="month" id="calendar" required>
+    <button id="searchMonth">Search</button>
+    <button id="exportMonth">Export</button>
+    
+    <label for="LocationFilter">Location:</label>
+    <select id="LocationFilter" required>
+        <option value="" selected>All Locations</option>
+        <option value="Unit 1">Unit 1</option>
+        <option value="Unit 2">Unit 2</option>
+        <option value="Unit 3">Unit 3</option>
+        <option value="Noida Office">Noida Office</option>
+        <option value="Other">Other</option>
+    </select>
+    <button id="searchLocation">Search</button>
+    
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Sr No</th>
+                <th>Calendar</th>
+                <th>Trainer Name</th>
+                <th>Trainer Name Other</th>
+                <th>Training Date</th>
+                <th>Training Time</th>
+                <th>Training End Time</th>
+                <th>Training Head</th>
+                <th>other Training Head</th>
+                <th>Training Topic</th>
+                <th> other Training Topic</th>
+                <th>Location</th>
+                <th>Reference No</th>
+                <th>Employee Code</th>
+                <th>Data Enter By</th>
+                <!-- <th>Export</th> -->
+                <th>action</th>
+
+            </tr>
+        </thead>
+        <tbody id="dataTable">
+            <!-- Data will be dynamically inserted here -->
+        </tbody>
+    </table>
+    <script>
+
+
+        // Logout functionality
+        function logout() {
+            localStorage.removeItem("isLoggedIn");
+            localStorage.removeItem("role");
+            window.location.href = "login.html";
+        }
+
+        // Redirect if not logged in
+        if (localStorage.getItem("isLoggedIn") !== "true") {
+            window.location.href = "login.html";
+        }
+
+        // Load queries on page load
+        window.onload = loadQueries;
+
+
+
+   
+
+    </script>
+    <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <nav>
+        <div class="logo">Admin Dashboard</div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="data.html">View Data</a></li>
+            <li id="admin-link"><a href="admin.html">Dashboard</a></li>
+            <li><button onclick="logout()" id="logbtn">Logout</button></li>
+        </ul>
+    </nav>
+
+    <h2>Training Form Submissions Overview</h2>
+
+    <div class="dashboard">
+        <div class="card">
+            <h3>Total Submissions</h3>
+            <p id="totalSubmissions">0</p>
+        </div>
+        <div class="card">
+            <h3>Submissions Per Trainer</h3>
+            <ul id="trainerCountList"></ul>
+        </div>
+    </div>
+
+    <canvas id="submissionsChart"></canvas>
+
+    <div class="button-container">
+        <!-- <button onclick="deleteAllSubmissions()" id="deleteBtn">
+            Delete All Submissions
+        </button> -->
+    </div>
+    <script>
+  async function loadDashboardData() {
+    try {
+        const role = localStorage.getItem("role"); // Get role from localStorage
+        if (!role) {
+            console.error("No role found in localStorage");
+            return;
+        }
+
+        let response = await fetch(`http://localhost:5000/get-data?role=${role}`); // Include role in query
+        let submissions = await response.json();
+
+        console.log("Fetched Data:", submissions); // ✅ Debugging step
+
+        if (!Array.isArray(submissions)) {
+            console.error("Error: submissions is not an array", submissions);
+            return;
+        }
+
+        // Display Total Submissions
+        document.getElementById("totalSubmissions").innerText = submissions.length;
+
+        let dataEnterByCounts = {};
+        let trainerList = document.getElementById("trainerCountList");
+        trainerList.innerHTML = "";
+
+        submissions.forEach(sub => {
+            if (sub.dataenterby) {
+                dataEnterByCounts[sub.dataenterby] = (dataEnterByCounts[sub.dataenterby] || 0) + 1;
+            }
+        });
+
+        // Populate Trainer List
+        for (let person in dataEnterByCounts) {
+            let li = document.createElement("li");
+            li.innerText = `${person}: ${dataEnterByCounts[person]}`;
+            trainerList.appendChild(li);
+        }
+
+        // Update Chart
+        let ctx = document.getElementById("submissionsChart").getContext("2d");
+        new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: Object.keys(dataEnterByCounts),
+                datasets: [{
+                    label: "Data Entered By",
+                    data: Object.values(dataEnterByCounts),
+                    backgroundColor: "rgba(54, 162, 235, 0.5)",
+                    borderColor: "rgba(54, 162, 235, 1)",
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+
+    } catch (error) {
+        console.error("Error loading dashboard data:", error);
+    }
+}
+
+
+
+
+        function deleteAllSubmissions() {
+            if (confirm("Are you sure you want to delete all submissions?")) {
+                localStorage.removeItem("submissions");
+                alert("All submissions deleted successfully!");
+                loadDashboardData();
+            }
+        }
+
+// Run function on page load
+window.onload = loadDashboardData;
+
+
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const role = localStorage.getItem("role");
+
+            if (role !== "admin") {
+                alert("Access Denied! Redirecting to Home Page.");
+                window.location.href = "index.html"; // Redirect non-admin users
+            }
+        });
+
+
+        // Logout functionality
+function logout() {
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("role");
+    window.location.href = "login.html";
+}
+
+// Redirect if not logged in
+if (localStorage.getItem("isLoggedIn") !== "true") {
+    window.location.href = "login.html";
+}
+
+// Load queries on page load
+window.onload = loadQueries;
+
+
+    </script>
+
+</body>
+
+</html>

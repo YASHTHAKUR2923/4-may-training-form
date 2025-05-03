@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+
+
+<!-- Navbar -->
+<nav>
+    <div class="logo">ERP System</div>
+    <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="data.html">View Data</a></li>
+
+    </ul>
+</nav>
+
+<body>
+    <form id="login-form">
+        <label for="username">Username:</label>
+        <input type="text" id="username" required>
+        <label for="password">Password:</label>
+        <input type="password" id="password" required>
+        <button type="submit">Login</button>
+    </form>
+
+    <script>
+        // Redirect if already logged in
+        const isLoggedIn = localStorage.getItem("isLoggedIn");
+        const role = localStorage.getItem("role");
+
+        if (isLoggedIn === "true") {
+            window.location.href = role === "admin" ? "login.html" : "index.html";
+        }
+
+        document.getElementById("login-form").addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent form submission
+
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            // Define credentials for admin, user, HR, and Manager
+            const adminUsername = "amit tiwari";
+            const adminPassword = "amittiwari123";
+            const userUsername = "unit2";
+            const userPassword = "unit2";
+            const hrUsername = "unit3";
+            const hrPassword = "unit3";
+            const managerUsername = "unit1";
+            const managerPassword = "unit1";
+
+            // Check for credentials
+            if (username === adminUsername && password === adminPassword) {
+                localStorage.setItem("isLoggedIn", "true");
+                localStorage.setItem("role", "admin");
+                window.location.href = "index.html"; // Redirect for admin
+            } else if (username === userUsername && password === userPassword) {
+                localStorage.setItem("isLoggedIn", "true");
+                localStorage.setItem("role", "user");
+                window.location.href = "index.html"; // Redirect for user
+            } else if (username === hrUsername && password === hrPassword) {
+                localStorage.setItem("isLoggedIn", "true");
+                localStorage.setItem("role", "hr");
+                window.location.href = "index.html"; // Redirect for HR
+            } else if (username === managerUsername && password === managerPassword) {
+                localStorage.setItem("isLoggedIn", "true");
+                localStorage.setItem("role", "manager");
+                window.location.href = "index.html"; // Redirect for Manager
+            } else {
+                alert("Invalid username or password.");
+            }
+        });
+
+        // Logout functionality
+        function logout() {
+            localStorage.removeItem("isLoggedIn");
+            localStorage.removeItem("role");
+            window.location.href = "login.html";
+        }
+
+    </script>
+
+</body>
+
+</html>

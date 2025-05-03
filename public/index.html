@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Training Form</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav>
+        <div class="logo">
+            <h2 style="color: #ffffff;">TRAINING FORM </h2>
+        </div>
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="data.html">View Data</a></li>
+            <li><a href="admin.html">Dashboard</a></li>
+            <btn onclick="logout()" id="logbtn"
+                style="float:none; color: #ffffff; font-size: 15px; background-color: #04767e; margin: 10px; cursor: pointer; padding: 8px; border-radius: 8px; display: block; text-align: center;">
+                Logout</btn>
+
+        </ul>
+    </nav>
+
+    <h2> Fill Training Form</h2>
+    <form id="trainingForm">
+
+
+        <p>Please fill out the details below:</p>
+
+
+        <label for="calendar" style="font-weight: bold;  font-size: 16px; color: #333;">Calendar:</label>
+        <input type="month" id="calendar" required
+            style="padding: 8px; font-size: 14px; border: 2px solid #008089; width: 97%; border-radius: 5px; outline: none; cursor: pointer;">
+
+
+        <label for="trainerName">Trainer Name:</label>
+        <select id="trainerName" required onchange="toggleOtherInput()">
+            <option value="" disabled selected>Select Trainer</option>
+            <option value="AMIT TIWARI">AMIT TIWARI</option>
+            <option value="SANTOSH KUMAR MISHRA">SANTOSH KUMAR MISHRA</option>
+            <option value="VIJAY KUMAR">VIJAY KUMAR</option>
+            <option value="SUMIT KUMAR">SUMIT KUMAR</option>
+            <option value="ASHIFA TABASSUM">ASHIFA TABASSUM</option>
+            <option value="PRAMOD KUMAR">PRAMOD KUMAR</option>
+            <option value="RAGHUVENDRA PANDEY">RAGHUVENDRA PANDEY</option>
+            <option value="ILMA PARVEEN">ILMA PARVEEN</option>
+            <option value="MOHAMMAD KALEEM BEG">MOHAMMAD KALEEM BEG</option>
+            <option value="NITIN KUMAR">NITIN KUMAR</option>
+            <option value="TANZEEM HUSAIN">TANZEEM HUSAIN</option>
+            <option value="JAMAL AHAMAD">JAMAL AHAMAD</option>
+            <option value="ARJUN KUMAR">ARJUN KUMAR</option>
+            <option value="SAMIA IQBAL">SAMIA IQBAL</option>
+            <option value="MOHD DANISH">MOHD DANISH</option>
+            <option value="other">Other</option>
+        </select>
+
+
+        <!-- Hidden Input Field for Other Name -->
+        <div id="otherTrainerDiv" style="display: none; margin-top: 10px;">
+            <label for="otherTrainer">Enter Trainer Name:</label>
+            <input type="text" id="otherTrainer" placeholder="Enter name">
+        </div>
+
+
+        <label for="trainingDate">Training Date:</label>
+        <input type="date" id="trainingDate" required>
+
+        <label for="trainingTiming">Training Timing:</label>
+        <input type="time" id="trainingTiming" required>
+
+        <label for="trainingTimingEnd">Training End Time:</label>
+        <input type="time" id="trainingTimingEnd" required>
+
+        <!-- Training Head Dropdown -->
+        <label for="trainingHead">Training Head:</label>
+        <select id="trainingHead" required
+            onchange="updateTopics(); toggleOtherInput('trainingHead', 'otherTrainingHead')">
+            <option value="" disabled selected>Select Training Head</option>
+            <option value="Awareness">Awareness</option>
+            <option value="Chemical Management System">Chemical Management System</option>
+            <option value="Compilance">Compilance</option>
+            <option value="CT PAT">CT PAT</option>
+            <option value="Customer Compliance">Customer Compliance</option>
+            <option value="ETP">ETP</option>
+            <option value="Fire Safety">Fire Safety</option>
+            <option value="Fire Safety Training">Fire Safety Training</option>
+            <option value="First Aid">First Aid</option>
+            <option value="Grievance">Grievance</option>
+            <option value="Hygiene">Hygiene</option>
+            <option value="Production">Production</option>
+            <option value="QMS">QMS</option>
+            <option value="Safety">Safety</option>
+            <option value="Salary & Wages">Salary & Wages</option>
+            <option value="Soft skills">Soft skills</option>
+            <option value="SOPs">SOPs</option>
+            <option value="Waste Management">Waste Management</option>
+            <option value="Other">Other</option>
+        </select>
+
+        <!-- Input Box for Other Training Head -->
+        <input type="text" id="otherTrainingHead" placeholder="Enter Other Training Head" style="display: none;"
+            oninput="updateTopics()">
+
+        <br>
+
+        <!-- Training Topic Dropdown -->
+        <label for="trainingTopic">Training Topic:</label>
+        <select id="trainingTopic" onchange="toggleOtherInput('trainingTopic', 'otherTrainingTopic')">
+            <option value="" disabled selected>Select Training Topic</option>
+        </select>
+
+        <!-- Input Box for Other Training Topic -->
+        <input type="text" id="otherTrainingTopic" placeholder="Enter Other Training Topic" style="display: none;">
+
+        <br>
+
+
+
+        <!-- Input Box for Other Training Topic -->
+        <input type="text" id="otherTrainingTopic" placeholder="Enter Other Training Topic" style="display: none;">
+
+        <!-- Location Dropdown -->
+        <label for="Location">Location:</label>
+        <select id="Location" required>
+            <option value="" disabled selected>Select Location</option>
+            <option value="Unit 1">Unit 1</option>
+            <option value="Unit 2">Unit 2</option>
+            <option value="Unit 3">Unit 3</option>
+            <option value="Noida Office">Noida Office</option>
+            <option value="Other">Other</option>
+        </select>
+
+        <!-- Hidden Input Field for Custom Location -->
+        <input type="text" id="otherLocationInput" placeholder="Enter other location"
+            style="display: none; margin-top: 10px;">
+
+
+
+        <label for="referenceNo">Reference No:</label>
+        <input type="text" id="referenceNo" readonly> <!-- Reference number is auto-filled -->
+
+
+        <label for="dataenterby">Data Enter By:</label>
+        <input type="text" id="dataEnterBy" name="dataEnterBy" required>
+
+
+        <label for="employeeCode">Employee Code:</label>
+        <input type="text" id="employeeCode" required>
+
+
+
+
+
+        <button type="submit" class="submit-button">Submit</button>
+    </form>
+
+
+
+    <script src="script.js"></script>
+</body>
+
+</html>
