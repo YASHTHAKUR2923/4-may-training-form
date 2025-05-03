@@ -1,45 +1,87 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const bodyParser = require("body-parser");
+const path = require("path");
 const { Pool } = require("pg");
 
 const app = express();
-const pool = new Pool({
-    user: "postgres",
-    host: "localhost",
-    database: "MITrainingAppDB",
-    password: "yash2923",
-    port: 5432,
-});
 
+// PostgreSQL connection (Render-compatible)
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false,
+    },
+});
 
 // Middleware
 app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json());
 
-// POST - Save Form Data to Database
+// Serve static files from public/
+app.use(express.static(path.join(__dirname, "../public")));
+
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "../public/index.html"));
+});
+
+// POST - Save Form Data
 app.post("/submit-form", async (req, res) => {
     try {
-        const { calendar, trainerName, otherTrainer, trainingDate, trainingTiming, trainingTimingEnd, trainingHead, trainingTopic, Location, referenceNo, employeeCode, dataEnterBy, otherTrainingHead, otherTrainingTopic } = req.body;
+        const {
+            calendar,
+            trainerName,
+            otherTrainer,
+            trainingDate,
+            trainingTiming,
+            trainingTimingEnd,
+            trainingHead,
+            trainingTopic,
+            Location,
+            referenceNo,
+            employeeCode,
+            dataEnterBy,
+            otherTrainingHead,
+            otherTrainingTopic
+        } = req.body;
+
         const result = await pool.query(
-            "INSERT INTO training (calendar, trainerName, otherTrainer, trainingDate, trainingTiming, trainingTimingEnd, trainingHead, trainingTopic, Location, referenceNo, employeeCode, dataEnterBy,otherTrainingHead,otherTrainingTopic) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14) RETURNING *",
-            [calendar, trainerName, otherTrainer, trainingDate, trainingTiming, trainingTimingEnd, trainingHead, trainingTopic, Location, referenceNo, employeeCode, dataEnterBy, otherTrainingHead, otherTrainingTopic]
+            `INSERT INTO training 
+            (calendar, trainerName, otherTrainer, trainingDate, trainingTiming, trainingTimingEnd, 
+            trainingHead, trainingTopic, Location, referenceNo, employeeCode, dataEnterBy, 
+            otherTrainingHead, otherTrainingTopic)
+            VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14) RETURNING *`,
+            [
+                calendar,
+                trainerName,
+                otherTrainer,
+                trainingDate,
+                trainingTiming,
+                trainingTimingEnd,
+                trainingHead,
+                trainingTopic,
+                Location,
+                referenceNo,
+                employeeCode,
+                dataEnterBy,
+                otherTrainingHead,
+                otherTrainingTopic
+            ]
         );
 
         res.status(201).json(result.rows[0]);
     } catch (error) {
-        console.error(error);
+        console.error("Error submitting form:", error);
         res.status(500).json({ message: "Error saving data" });
     }
 });
 
+// GET - Fetch Data
 app.get("/get-data", async (req, res) => {
     try {
-        const { role } = req.query; // Retrieve role from query parameters
+        const { role } = req.query;
 
         let query;
-
         if (role === "admin") {
             query = "SELECT * FROM training ORDER BY id DESC";
         } else if (role === "manager") {
@@ -55,13 +97,12 @@ app.get("/get-data", async (req, res) => {
         const result = await pool.query(query);
         res.status(200).json(result.rows);
     } catch (error) {
-        console.error(error);
+        console.error("Error fetching data:", error);
         res.status(500).json({ message: "Error fetching data" });
     }
 });
 
-
-
+// DELETE - Delete by ID
 app.delete("/delete-data/:id", async (req, res) => {
     try {
         const { id } = req.params;
@@ -73,11 +114,13 @@ app.delete("/delete-data/:id", async (req, res) => {
 
         res.json({ message: "Record deleted successfully" });
     } catch (error) {
-        console.error(error);
+        console.error("Error deleting record:", error);
         res.status(500).json({ message: "Error deleting data" });
     }
 });
 
-app.listen(5000, () => {
-    console.log("Server running on port 5000");
+// Start server (Render uses dynamic port)
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });
