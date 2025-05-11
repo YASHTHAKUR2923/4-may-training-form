@@ -31,7 +31,7 @@ app.post("/submit-form", async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Error saving data" });
-    }
+    } 
 });
 
 app.get("/get-data", async (req, res) => {
