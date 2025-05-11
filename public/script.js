@@ -55,8 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
             };
 
             try {
-                const response = await fetch("https://four-may-training-form.onrender.com/submit-form", {
-
+                const response = await fetch("http://localhost:5000/submit-form", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(formData)
@@ -93,8 +92,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
     
     
-            const response = await fetch(`https://four-may-training-form.onrender.com/get-data?role=${role}`);
-
+            const response = await fetch(`http://localhost:5000/get-data?role=${role}`);
             const data = await response.json();
 
             tableBody.innerHTML = "";
@@ -161,8 +159,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function deleteRow(id) {
         if (confirm("Are you sure you want to delete this submission?")) {
-          fetch(`https://four-may-training-form.onrender.com/delete-data/${id}`, {
-
+            fetch(`http://localhost:5000/delete-data/${id}`, {
                 method: "DELETE",
             })
                 .then(response => response.json())
@@ -179,8 +176,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const role = "manager"; // Change to dynamic if needed
         const month = calendarInput.value;
     
-       fetch(`https://four-may-training-form.onrender.com/get-data?role=${role}`)
-
+        fetch(`http://localhost:5000/get-data?role=${role}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);

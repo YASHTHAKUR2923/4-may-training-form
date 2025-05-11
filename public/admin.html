@@ -50,8 +50,7 @@
             return;
         }
 
-        let response = await fetch(`https://four-may-training-form.onrender.com/get-data?role=${role}`)
-; // Include role in query
+        let response = await fetch(`http://localhost:5000/get-data?role=${role}`); // Include role in query
         let submissions = await response.json();
 
         console.log("Fetched Data:", submissions); // ✅ Debugging step
