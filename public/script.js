@@ -504,7 +504,5 @@ if (localStorage.getItem("isLoggedIn") !== "true") {
     window.location.href = "login.html";
 }
 
-// Load queries on page load
-window.onload = loadQueries;
 
 
